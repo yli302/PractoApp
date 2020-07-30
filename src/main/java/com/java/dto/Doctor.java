@@ -1,10 +1,10 @@
 package com.java.dto;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,14 +31,6 @@ public class Doctor {
 	private String description;
 	@Embedded
 	private Address address;// aggregation; composition
-
-//value objects do not have their own primary key
-	@Data
-	@Embeddable
-	static public class Address {
-		private String hno;
-		private String street, city, state, country;
-		int zipcode;
-	}
-
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<String, Boolean> schedule;
 }

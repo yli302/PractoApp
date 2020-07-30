@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,11 @@ import com.java.dto.Patient;
 @Controller
 @RequestMapping("/login")
 public class LogininController {
+	@Autowired
+	PatientRepository pr;
+	@Autowired
+	DoctorRepository dr;
+
 	@GetMapping("/patient")
 	public String getPatient() {
 		return "patientLogin";
@@ -27,7 +33,6 @@ public class LogininController {
 	@PostMapping("/patient")
 	public String getPatient(HttpServletRequest req, @RequestParam("username") String username,
 			@RequestParam("password") String password, Model model) {
-		PatientRepository pr = new PatientRepository();
 		Optional<Patient> op = pr.checkUserExist(username, password);
 		if (op.isPresent()) {
 			// success login add patient to session
@@ -47,7 +52,6 @@ public class LogininController {
 	@PostMapping("/doctor")
 	public String getDoctor(HttpServletRequest req, @RequestParam("username") String username,
 			@RequestParam("password") String password, Model model) {
-		DoctorRepository dr = new DoctorRepository();
 		Optional<Doctor> op = dr.checkUserExist(username, password);
 		if (op.isPresent()) {
 			// success login add patient to session

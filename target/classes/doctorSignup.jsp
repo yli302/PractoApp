@@ -28,6 +28,9 @@
 		Hno: <input type="number" name="hno"><br>
 		Street: <input type="text" name="street"><br>
 		City: <input type="text" name="city" required><br>
+		StartTime: <input type="text" name="startTime" required><br>
+		EndTime: <input type="text" name="endTime" required><br>
+		TimePeriod(minutes): <input type="number" name="timePeriod" required><br>
 		<input type="submit" value="Sign up">
 	</form>
 </body>

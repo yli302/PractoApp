@@ -9,13 +9,14 @@
 <title>Insert title here</title>
 </head>
 <body>
+	
 	<% List<Appointment> list = (List<Appointment>)request.getAttribute("list");%>
 	
 	<table border="1">
 		<tr>
 			<td width="50px">Id</td>
-			<td width="100px">patientId</td>
-			<td width="150px">doctorId</td>
+			<td width="100px">patient</td>
+			<td width="150px">doctor</td>
 			<td width="100px">time</td>
 			<td width="100px">rate</td>
 			<td>Rate this appointment</td>
@@ -28,14 +29,11 @@
 			for (Appointment appointment : list) {%>
 				<tr>
 					<td><%=appointment.getId()%></td>
-					<td><%=appointment.getPatientId()%></td>
-					<td><%=appointment.getDoctorId()%></td>
+					<td><%=appointment.getPatient().getUsername()%></td>
+					<td><%=appointment.getDoctor().getUsername()%></td>
 					<td><%=appointment.getTime()%></td>
 					<form action="/PractoApp/search/rate" method="post">
 					<td><input type="number" name="rate" value=<%=appointment.getRate()%>></td>
-					<input type="hidden" name="patientId" value=<%=appointment.getPatientId()%>>
-					<input type="hidden" name="doctorId" value=<%=appointment.getDoctorId()%>>
-					<input type="hidden" name="time" value=<%=appointment.getTime()%>>
 					<input type="hidden" name="id" value=<%=appointment.getId()%>>
 					<td><input type="submit" value="Rate"></td>
 					</form>
