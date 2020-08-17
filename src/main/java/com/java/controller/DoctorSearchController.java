@@ -37,7 +37,7 @@ public class DoctorSearchController {
 
 	@PostMapping
 	public String searchDoctor(@ModelAttribute DoctorSearchCriteria searchCriteria, Model model) {
-		List<Doctor> list = dr.getAllDoctors(searchCriteria.getName(), searchCriteria.getCity(),
+		List<Doctor> list = dr.findByNameAndAddress_CityAndSpeciality(searchCriteria.getName(), searchCriteria.getCity(),
 				searchCriteria.getSpeciality());
 		model.addAttribute("list", list);
 		System.out.println("****************" + list);
@@ -46,7 +46,7 @@ public class DoctorSearchController {
 
 	@GetMapping("appointment/{id}")
 	public String makeAppointment(@PathVariable("id") int doctorId, Model model) {
-		Doctor d = dr.getUser(doctorId);
+		Doctor d = dr.findById(doctorId).get();
 		model.addAttribute("doctor", d);
 		return "newAppointment";
 	}
@@ -58,7 +58,7 @@ public class DoctorSearchController {
 		Appointment appointment = new Appointment();
 		appointment.setPatient(p);
 
-		Doctor doctor = dr.getUser(doctorId);
+		Doctor doctor = dr.findById(doctorId).get();
 		Map<String, Boolean> schedule = doctor.getSchedule();
 		schedule.put(time, true);
 		doctor.setSchedule(schedule);
@@ -67,23 +67,23 @@ public class DoctorSearchController {
 		appointment.setDoctor(doctor);
 		appointment.setTime(time);
 
-		ar.makeNewAppointment(appointment);
+		ar.save(appointment);
 		return "redirect:/";
 	}
 
 	@GetMapping("myAppointment")
 	public String myAppointment(HttpSession session, Model model) {
 		Patient p = (Patient) session.getAttribute("patient");
-		List<Appointment> appointments = ar.getAllAppointments(p);
+		List<Appointment> appointments = ar.findByPatient(p);
 		model.addAttribute("list", appointments);
 		return "myAppointment";
 	}
 
 	@PostMapping("rate")
 	public String rateAppointment(@RequestParam int id, @RequestParam int rate) {
-		Appointment ap = ar.getAppointment(id);
+		Appointment ap = ar.findById(id).get();
 		ap.setRate(rate);
-		ar.rateAppointment(ap);
+		ar.save(ap);
 		return "redirect:/";
 	}
 }

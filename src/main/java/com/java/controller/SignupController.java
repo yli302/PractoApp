@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +40,8 @@ public class SignupController {
 	private MessageSource messageSource;
 
 	@GetMapping("/patient")
-	public String getSignPatient() {
+	public String getSignPatient(@RequestParam String username) {
+		System.out.println(username);
 		return "patientSignup";
 	}
 
@@ -57,7 +59,7 @@ public class SignupController {
 			return "patientSignup";
 		}
 		// validation success, insert this patient user to database
-		pr.addUser(patient);
+		pr.save(patient);
 		model.addAttribute("massage", "Successful create user: " + patient.getUsername());
 		return "redirect:/";
 	}
@@ -68,6 +70,7 @@ public class SignupController {
 	}
 
 	@PostMapping("/doctor")
+	@PreAuthorize("hasRole('DOCTOR')")
 	public String getSignDoctor(HttpServletRequest req, @Valid @ModelAttribute Doctor doctor, BindingResult result,
 			@RequestParam("hno") String hno, @RequestParam("street") String street, @RequestParam("city") String city,
 			@RequestParam("startTime") String startTime, @RequestParam("endTime") String endTime,
@@ -118,7 +121,7 @@ public class SignupController {
 			return "doctorSignup";
 		}
 		// validation success, insert this doctor user to database
-		dr.addUser(doctor);
+		dr.save(doctor);
 		model.addAttribute("massage", "Successful create user: " + doctor.getUsername());
 		return "redirect:/";
 	}

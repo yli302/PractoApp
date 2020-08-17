@@ -33,7 +33,7 @@ public class LogininController {
 	@PostMapping("/patient")
 	public String getPatient(HttpServletRequest req, @RequestParam("username") String username,
 			@RequestParam("password") String password, Model model) {
-		Optional<Patient> op = pr.checkUserExist(username, password);
+		Optional<Patient> op = pr.findByUsernameAndPassword(username, password);
 		if (op.isPresent()) {
 			// success login add patient to session
 			req.getSession().setAttribute("patient", op.get());
@@ -52,7 +52,7 @@ public class LogininController {
 	@PostMapping("/doctor")
 	public String getDoctor(HttpServletRequest req, @RequestParam("username") String username,
 			@RequestParam("password") String password, Model model) {
-		Optional<Doctor> op = dr.checkUserExist(username, password);
+		Optional<Doctor> op = dr.findByUsernameAndPassword(username, password);
 		if (op.isPresent()) {
 			// success login add patient to session
 			req.getSession().setAttribute("doctor", op.get());

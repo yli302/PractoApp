@@ -23,5 +23,11 @@
 <a href = "search">Search Doctor</a> |
 <a href = "search/myAppointment">my Appointment</a>
 
+
+<form action="signup/patient">
+<input type="text" name="username">
+<input type="submit">
+</form>
+
 </body>
 </html>
